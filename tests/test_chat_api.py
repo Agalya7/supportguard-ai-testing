@@ -1,9 +1,14 @@
 import pytest
 
 from tests.data.chat_test_data import CHAT_SCENARIOS
+from validators.response_validator import validate_chat_response
 
 
-@pytest.mark.parametrize("scenario", CHAT_SCENARIOS, ids=lambda scenario: scenario["name"])
+@pytest.mark.parametrize(
+    "scenario",
+    CHAT_SCENARIOS,
+    ids=lambda scenario: scenario["name"],
+)
 def test_chat_response_for_different_scenarios(api_client, scenario):
     response = api_client.chat(scenario["message"])
 
@@ -11,5 +16,6 @@ def test_chat_response_for_different_scenarios(api_client, scenario):
 
     data = response.json()
 
-    assert "response" in data
+    validate_chat_response(data)
+
     assert scenario["expected_text"] in data["response"]
