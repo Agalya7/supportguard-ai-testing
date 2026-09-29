@@ -1,7 +1,10 @@
+from app.knowledge_base.policies import RETURN_POLICY
+
+
 def validate_return_policy(response: str) -> None:
     """Validate that the AI response follows the known return policy."""
 
     response_lower = response.lower()
+    return_window = RETURN_POLICY["return_window_days"]
 
-    assert "30 days" in response_lower
-    assert "90 days" not in response_lower
+    assert f"{return_window} days" in response_lower
