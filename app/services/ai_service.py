@@ -9,4 +9,7 @@ def generate_response(message: str) -> str:
     if "delivery" in message_lower or "order" in message_lower:
         return "You can check your order status using your order number."
 
+    if "account" in message_lower:
+        return "I can help you with your account. Please provide your order number."
+
     return "Thank you for contacting SupportGuard. How can I help you?"

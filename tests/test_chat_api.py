@@ -1,7 +1,7 @@
 import pytest
 
 from tests.data.chat_test_data import CHAT_SCENARIOS
-from validators.ai.policy_validator import validate_return_policy
+from validators.ai.registry import VALIDATORS
 from validators.response_validator import validate_chat_response
 
 
@@ -19,7 +19,15 @@ def test_chat_response_for_different_scenarios(api_client, scenario):
 
     validate_chat_response(data)
 
-    assert scenario["expected_text"] in data["response"]
+    if scenario["expected_text"]:
+        assert scenario["expected_text"] in data["response"]
 
-    if scenario["validator"] == "return_policy":
-        validate_return_policy(data["response"])
+    validator_name = scenario["validator"]
+
+    if validator_name:
+        validator = VALIDATORS[validator_name]
+
+        validator(
+            data["response"],
+            required_terms=scenario.get("required_terms", []),
+        )

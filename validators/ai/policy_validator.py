@@ -1,7 +1,7 @@
 from app.knowledge_base.policies import RETURN_POLICY
 
 
-def validate_return_policy(response: str) -> None:
+def validate_return_policy(response: str, **kwargs) -> None:
     """Validate that the AI response follows the known return policy."""
 
     response_lower = response.lower()
